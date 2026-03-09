@@ -1,0 +1,64 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.head_commit.message, '[release]')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Clone SysML v2 standard library
+        run: node packages/syside-languageserver/scripts/clone-sysml-release.mjs
+
+      - name: Prepare sysml.library
+        run: |
+          cd packages/syside-vscode
+          rm -rf sysml.library
+          mkdir -p sysml.library
+          cp ../../SysML-v2-Release/LICENSE sysml.library/LICENSE.LGPLv3
+          cp ../../SysML-v2-Release/LICENSE-GPL sysml.library/LICENSE.GPLv3
+          cp -r ../../SysML-v2-Release/sysml.library/* sysml.library/
+
+      - name: Compute version
+        id: version
+        run: |
+          SHORT_HASH=$(git rev-parse --short HEAD)
+          DATE=$(date -u +%Y%m%d)
+          echo "tag=0.9.1-${DATE}.${SHORT_HASH}" >> "$GITHUB_OUTPUT"
+
+      - name: Package VSIX
+        run: |
+          cd packages/syside-vscode
+          npx @vscode/vsce package --no-dependencies --allow-unused-files-pattern
+          mv *.vsix sireum-sysml-v2.vsix
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          files: packages/syside-vscode/sireum-sysml-v2.vsix
+          make_latest: true

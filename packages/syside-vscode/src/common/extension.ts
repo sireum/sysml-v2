@@ -105,11 +105,6 @@ export async function initialize(
     serverModule: vscode.Uri;
     clientOptions: LanguageClientOptions;
 }> {
-    vscode.window.showWarningMessage(
-        `'${context.extension.id}' has been deprecated, ` +
-            "see the [announcement](https://sensmetry.com/syside-editor-rebirth-sysml-v2-0-50x-speed-up-license-change-free-as-before/) for more details. " +
-            "Please migrate to 'Sensmetry.syside-editor' which provides the same features with better performance."
-    );
     const config = vscode.workspace.getConfiguration(SETTINGS_KEY);
     const clientConfig: Partial<ClientConfig> = config.client;
     const extensions = await collectExtensions(clientConfig.extensions ?? []);

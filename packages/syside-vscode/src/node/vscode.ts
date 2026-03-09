@@ -30,7 +30,8 @@ type Options = keyof typeof CONFIG.contributes.configuration.properties;
 export class SysMLVSCodeClientExtender extends BaseSysMLVSCodeClientExtender {
     protected async selectStdlibPath(): Promise<string | undefined> {
         // Try to find the bundled library first
-        const extPath = vscode.extensions.getExtension("Sensmetry.sysml-2ls")?.extensionPath;
+        const extPath = (vscode.extensions.getExtension("sireum.sysml-v2") ??
+            vscode.extensions.getExtension("Sensmetry.sysml-2ls"))?.extensionPath;
         if (extPath !== undefined) {
             return path.join(extPath, "sysml.library");
         }

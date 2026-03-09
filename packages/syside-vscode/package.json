@@ -1,12 +1,11 @@
 {
-    "name": "sysml-2ls",
-    "displayName": "[DEPRECATED] SysIDE Editor Legacy",
+    "name": "sysml-v2",
+    "displayName": "Sireum SysML v2",
     "description": "SysML v2 language support in VS Code.",
-    "publisher": "Sensmetry",
+    "publisher": "sireum",
     "author": {
-        "name": "Sensmetry",
-        "url": "https://sensmetry.com/",
-        "email": "opensource@sensmetry.com"
+        "name": "Sireum",
+        "url": "https://sireum.org/"
     },
     "version": "0.9.1",
     "icon": "icons/logo.png",
@@ -24,26 +23,27 @@
         "KerML",
         "SysML-v2"
     ],
-    "preview": true,
     "extensionKind": [
         "workspace",
         "ui"
     ],
     "repository": {
-        "url": "https://gitlab.com/sensmetry/public/sysml-2ls",
+        "url": "https://github.com/sireum/sysml-v2",
         "type": "git",
         "directory": "packages/syside-vscode"
-    },
-    "bugs": {
-        "url": "https://gitlab.com/sensmetry/public/sysml-2ls/-/issues"
     },
     "activationEvents": [
         "onLanguage:kerml",
         "onLanguage:sysml"
     ],
     "files": [
-        "out",
-        "src"
+        "dist",
+        "icons",
+        "src",
+        "syntaxes",
+        "sysml.library",
+        "language-configuration.json",
+        "LICENSE"
     ],
     "main": "./dist/node/extension.js",
     "browser": "./dist/browser/extension.js",
@@ -68,9 +68,9 @@
     "dependencies": {
         "fs-extra": "^11.1.0",
         "node-fetch": "^3.3.2",
+        "syside-base": "workspace:*",
         "syside-languageclient": "workspace:*",
         "syside-languageserver": "workspace:*",
-        "syside-base": "workspace:*",
         "syside-protocol": "workspace:*",
         "vscode-languageclient": "~8.0.2",
         "vscode-languageserver": "~8.0.2",
@@ -79,7 +79,7 @@
     "devDependencies": {
         "@types/fs-extra": "^11.0.1",
         "@types/vscode": "^1.56.0",
-        "@vscode/vsce": "^2.20.0",
+        "@vscode/vsce": "^3.7.1",
         "ovsx": "^0.8.0",
         "typescript-json-schema": "^0.59.0"
     },

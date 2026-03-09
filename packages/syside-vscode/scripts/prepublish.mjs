@@ -104,12 +104,12 @@ exec("pnpm run esbuild")
             fs
                 .mkdirp("icons")
                 .then(() => fs.copyFile("../../docs/images/logo.png", "icons/logo.png")),
-            fs.copy("../syside-languageserver/syntaxes", "syntaxes"),
+            // Copy languageserver syntaxes but preserve our custom sysml.tmLanguage.json
+            fs.copy("../syside-languageserver/syntaxes", "syntaxes", {
+                filter: (src) => !src.endsWith("sysml.tmLanguage.json"),
+            }),
         ])
     )
     .then(() =>
-        Promise.all([
-            updateTextMateGrammar("syntaxes/kerml.tmLanguage.json", "kerml"),
-            updateTextMateGrammar("syntaxes/sysml.tmLanguage.json", "sysml"),
-        ])
+        updateTextMateGrammar("syntaxes/kerml.tmLanguage.json", "kerml")
     );

@@ -272,12 +272,6 @@ export class SysMLSemanticTokenProvider extends AbstractSemanticTokenProvider {
      * Highlight comment bodies
      */
     protected comment(node: Comment, acceptor: SemanticTokenAcceptor): void {
-        acceptor({
-            node: node,
-            property: "body",
-            type: SysMLSemanticTokenTypes.annotationBody,
-        });
-
         if (node.locale) {
             acceptor({
                 node,
@@ -291,12 +285,6 @@ export class SysMLSemanticTokenProvider extends AbstractSemanticTokenProvider {
      * Highlight textual representation language
      */
     protected textualRep(node: TextualRepresentation, acceptor: SemanticTokenAcceptor): void {
-        acceptor({
-            node: node,
-            property: "body",
-            type: SysMLSemanticTokenTypes.annotationBody,
-        });
-
         acceptor({
             node,
             property: "language",
